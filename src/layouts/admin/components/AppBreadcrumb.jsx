@@ -1,12 +1,12 @@
 import { BreadCrumb } from "primereact/breadcrumb";
 import { useLocation, matchRoutes, useNavigate } from "react-router-dom";
-import { adminRoutes } from "../../../app/routes";
+import { adminRoutes } from "@/app/routes/admin.routes";
 
 const AppBreadcrumb = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const matches = matchRoutes(adminRoutes, location);
+    const matches = matchRoutes([adminRoutes], location);
 
     const items =
         matches
