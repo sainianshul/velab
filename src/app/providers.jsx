@@ -1,15 +1,17 @@
 import App from "./App";
-import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@/core/theme/ThemeProvider";
-import { PrimeReactProvider } from 'primereact/api';
+import { PrimeReactProvider } from "primereact/api";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient(); // 🔥 create once
 
 export default function Providers() {
     return (
         <ThemeProvider>
             <PrimeReactProvider>
-                <BrowserRouter>
+                <QueryClientProvider client={queryClient}>
                     <App />
-                </BrowserRouter>
+                </QueryClientProvider>
             </PrimeReactProvider>
         </ThemeProvider>
     );

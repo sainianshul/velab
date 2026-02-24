@@ -1,48 +1,42 @@
+import { useMatches, useNavigate } from "react-router-dom";
 import { BreadCrumb } from "primereact/breadcrumb";
-import { useLocation, matchRoutes, useNavigate } from "react-router-dom";
-import { adminRoutes } from "@/app/routes/admin.routes";
 
 const AppBreadcrumb = () => {
-    const location = useLocation();
+    const matches = useMatches() || [];
     const navigate = useNavigate();
 
-    const matches = matchRoutes([adminRoutes], location);
+    const items = matches
+        .filter(
+            (match) =>
+                match.pathname !== "/admin" &&
+                match?.handle?.breadcrumb
+        )
+        .map((match, index, arr) => {
+            const isLast = index === arr.length - 1;
+            const label = match.handle.breadcrumb(match.params);
 
-    const items =
-        matches
-            ?.filter(match => match.route.meta?.breadcrumb)
-            .map((match, index, array) => ({
-                label: match.route.meta.breadcrumb,
-                command:
-                    index !== array.length - 1
-                        ? () => navigate(match.pathname)
-                        : undefined
-            })) || [];
-
-    // Remove Dashboard from list (we'll use home instead)
-    const filteredItems = items.slice(1);
+            return {
+                label,
+                template: () =>
+                    isLast ? (
+                        <span className="font-medium">{label}</span>
+                    ) : (
+                        <span
+                            className="cursor-pointer text-color"
+                            onClick={() => navigate(match.pathname)}
+                        >
+                            {label}
+                        </span>
+                    ),
+            };
+        });
 
     const home = {
         icon: "pi pi-home",
-        command: () => navigate("/")
+        command: () => navigate("/admin"),
     };
 
-    return (
-        <BreadCrumb
-            model={filteredItems}
-            home={home}
-            separatorIcon="pi pi-angle-right"
-            pt={{
-                root: {
-                    style: {
-                        background: "transparent",
-                        border: "none",
-                        padding: 0
-                    }
-                }
-            }}
-        />
-    );
+    return <BreadCrumb model={items} home={home} />;
 };
 
 export default AppBreadcrumb;
