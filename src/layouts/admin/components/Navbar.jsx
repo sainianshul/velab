@@ -5,7 +5,7 @@ import { InputText } from "primereact/inputtext";
 import { Menu } from "primereact/menu";
 import { Badge } from "primereact/badge";
 import { OverlayPanel } from "primereact/overlaypanel";
-import { useTheme } from "../../../core/theme/ThemeProvider";
+import { useTheme } from "@/core/theme/ThemeProvider";
 
 const Navbar = ({ onToggleSidebar }) => {
     const { toggleTheme, theme } = useTheme();
